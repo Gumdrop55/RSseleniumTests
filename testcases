@@ -1,0 +1,79 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class RStudiotest {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+
+		/** Creating a Space
+             Creating a Project within the Space
+             Verifying that the RStudio IDE loads 
+		 ** 
+		 * @author Crystal
+		 **/
+
+		System.setProperty("webdriver.chrome.driver", WebDriverTools.chromeDriverDetector());
+
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+
+          //Test 1 - Open site and log into account
+
+				// Open site
+				driver.get("https://rstudio.cloud");
+				
+				// Click to log into the site
+				driver.findElement(By.xpath("//*[@id='homeContentGA']/div[1]/div/div[3]/a[2]")).click();
+				
+				// Enter in log up data (Test account - can also use authentication tests )
+				driver.findElement(By.name("email")).sendKeys("rstudiotest44@gmail.com");
+				driver.findElement(By.name("password")).sendKeys("Tester123!");
+
+				// Click "login" button
+				driver.findElement(By.xpath("//*[@id='login-sub-rstudio']/fieldset[2]")).click();
+
+			
+		   //Test 2 - Creating a Space 
+				Thread.sleep(2000);
+			    driver.findElement(By.cssSelector("button.menuItem.newSpace")).click();
+			    driver.findElement(By.id("name")).click();    
+			    driver.findElement(By.id("name")).sendKeys("Test" + System.currentTimeMillis()); // This adds a random number to the space name
+			    driver.findElement(By.cssSelector("button[type='submit']")).click();
+			    
+	      //Test 3 -  Creating a Project within the Space
+				Thread.sleep(2000);
+				//Click on "New Project"
+				  driver.findElement(By.cssSelector("button.action.newProject.menuInstant")).click();
+
+         //Test 4 -  Verifying that the RStudio IDE loads 
+				  // This will check for the page to load - if it does console will print "Page Loaded." If failed nothing will be printed in console
+
+				  JavascriptExecutor js = (JavascriptExecutor)driver;				 
+
+				   waitForPageLoad(); {
+
+				  String pageLoadStatus;
+				do {
+
+				  js = (JavascriptExecutor) driver;
+
+				  pageLoadStatus = (String)js.executeScript("return document.readyState");
+
+				  } while ( !pageLoadStatus.equals("complete") );
+
+				  System.out.println("Page Loaded.");
+
+				  }
+
+
+}
+
+	private static void waitForPageLoad() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
